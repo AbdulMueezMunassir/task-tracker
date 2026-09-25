@@ -128,3 +128,19 @@
     @apply font-sans;
   }
 }
+@layer base {
+  :root {
+    --background: 248 250 252;        /* #f8fafc - slate-50 */
+    --foreground: 15 23 42;           /* #0f172a - slate-900 */
+    --card: 255 255 255;              /* white */
+    --card-foreground: 15 23 42;
+    --primary: 37 99 235;             /* #2563eb - blue-600 */
+    --primary-foreground: 255 255 255;
+    --secondary: 241 245 249;         /* slate-100 */
+    --muted: 241 245 249;
+    --muted-foreground: 100 116 139;  /* slate-500 */
+    --border: 226 232 240;            /* #e2e8f0 - slate-200 */
+    --ring: 37 99 235;
+    --radius: 0.5rem;                 /* 8px */
+  }
+}
