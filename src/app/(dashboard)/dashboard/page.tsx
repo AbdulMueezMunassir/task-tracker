@@ -1,6 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { logoutAction } from "@/lib/actions/auth";
-import { Button } from "@/components/ui/button";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -9,29 +7,42 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="min-h-screen bg-neutral-50">
-      <header className="bg-white border-b border-neutral-200">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="text-lg font-semibold text-neutral-900">Task Tracker</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-neutral-500">{user?.email}</span>
-            <form action={logoutAction}>
-              <Button type="submit" variant="outline" size="sm">
-                Logout
-              </Button>
-            </form>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-semibold text-neutral-900">
-          Welcome, {user?.user_metadata?.name ?? user?.email}
-        </h2>
-        <p className="text-neutral-500 mt-2">
-          Dashboard 
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Welcome back, {user?.user_metadata?.name ?? user?.email}
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Here's your workspace overview.
         </p>
-      </main>
+      </div>
+
+      {/* Stat Cards Placeholder */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        {[
+          { label: "Total Tasks", value: "0" },
+          { label: "To Do", value: "0" },
+          { label: "In Progress", value: "0" },
+          { label: "Done", value: "0" },
+          { label: "Overdue", value: "0" },
+        ].map((stat) => (
+          <div
+            key={stat.label}
+            className="p-4 bg-card border border-border rounded-xl shadow-sm"
+          >
+            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+              {stat.label}
+            </p>
+            <p className="text-2xl font-bold mt-2">{stat.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="p-6 bg-card border border-border rounded-xl">
+        <p className="text-sm text-muted-foreground">
+          Tasks will appear here soon.
+        </p>
+      </div>
     </div>
   );
 }

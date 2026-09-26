@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { loginSchema, signupSchema } from "@/lib/validations/auth";
+import { prisma } from "@/lib/prisma";
 
 export type AuthState = {
   error?: string;
@@ -27,7 +28,7 @@ export async function signupAction(
 
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
@@ -37,6 +38,27 @@ export async function signupAction(
 
   if (error) {
     return { error: error.message };
+  }
+
+  // ⭐ Sync user to Prisma
+  if (data.user) {
+    try {
+      await prisma.user.upsert({
+        where: { id: data.user.id },
+        update: {
+          email: parsed.data.email,
+          name: parsed.data.name,
+        },
+        create: {
+          id: data.user.id,
+          email: parsed.data.email,
+          name: parsed.data.name,
+        },
+      });
+    } catch (err) {
+      console.error("Prisma user sync failed:", err);
+      // Don't block signup — auth succeeded
+    }
   }
 
   revalidatePath("/", "layout");
