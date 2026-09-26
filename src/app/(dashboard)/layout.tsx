@@ -24,7 +24,7 @@ export default async function DashboardLayout({
         userEmail={user.email}
         userName={user.user_metadata?.name as string | undefined}
       />
-      <main className="ml-60 pt-14 min-h-screen">
+        <main className="ml-0 md:ml-60 pt-14 min-h-screen">
         <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">{children}</div>
       </main>
     </div>

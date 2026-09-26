@@ -20,7 +20,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-60 z-40 flex flex-col justify-between p-4 bg-card border-r border-border">
+    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-60 z-40 flex-col justify-between p-4 bg-card border-r border-border">
       {/* Top Section */}
       <div className="flex flex-col gap-5">
         {/* Brand */}

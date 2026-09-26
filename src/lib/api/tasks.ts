@@ -53,3 +53,26 @@ export async function deleteTask(id: string): Promise<void> {
     throw new Error(json.error ?? "Failed to delete task");
   }
 }
+export type TaskStats = {
+  total: number;
+  todo: number;
+  inProgress: number;
+  done: number;
+  overdue: number;
+};
+
+export function calculateStats(tasks: Task[]): TaskStats {
+  const now = new Date();
+  return {
+    total: tasks.length,
+    todo: tasks.filter((t) => t.status === "TODO").length,
+    inProgress: tasks.filter((t) => t.status === "IN_PROGRESS").length,
+    done: tasks.filter((t) => t.status === "DONE").length,
+    overdue: tasks.filter(
+      (t) =>
+        t.dueDate &&
+        new Date(t.dueDate) < now &&
+        t.status !== "DONE"
+    ).length,
+  };
+}

@@ -20,7 +20,7 @@ export function TopNavbar({ userEmail, userName }: TopNavbarProps) {
     : userEmail?.[0].toUpperCase() ?? "U";
 
   return (
-    <header className="fixed top-0 left-60 right-0 h-14 z-30 flex items-center justify-between px-6 bg-card border-b border-border">
+    <header className="fixed top-0 left-0 md:left-60 right-0 h-14 z-30 flex items-center justify-between px-4 md:px-6 bg-card border-b border-border">
       {/* Left: Search */}
       <div className="flex items-center gap-4 flex-1 max-w-md">
         <div className="relative w-full">
