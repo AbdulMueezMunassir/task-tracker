@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const profileSchema = z.object({
-  name: z.string().min(2).max(50),
+  name: z.string().min(2, "Name must be at least 2 characters").max(50),
 });
 
 export type ProfileState = {
@@ -35,9 +35,13 @@ export async function updateProfileAction(
 
   try {
     // Update Supabase auth metadata
-    await supabase.auth.updateUser({
+    const { error: authError } = await supabase.auth.updateUser({
       data: { name: parsed.data.name },
     });
+
+    if (authError) {
+      return { error: authError.message };
+    }
 
     // Update Prisma user
     await prisma.user.update({
@@ -45,8 +49,11 @@ export async function updateProfileAction(
       data: { name: parsed.data.name },
     });
 
+    // Revalidate ALL paths to clear cache
+    revalidatePath("/", "layout");
     revalidatePath("/settings");
     revalidatePath("/dashboard");
+
     return { success: "Profile updated successfully" };
   } catch (err) {
     console.error(err);

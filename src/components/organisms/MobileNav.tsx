@@ -53,7 +53,7 @@ export function MobileNav() {
 
           {/* Sidebar Panel — Full height, solid white */}
           <aside
-            className="absolute left-0 top-0 h-screen w-72 flex flex-col shadow-2xl"
+            className="absolute left-0 top-0 h-full w-72 flex flex-col shadow-2xl"
             style={{ backgroundColor: "#ffffff" }}
           >
             {/* Header: Brand + Close (Fixed at Top) */}
@@ -107,7 +107,7 @@ export function MobileNav() {
             </nav>
 
             {/* Logout (Fixed at Bottom) */}
-            <div className="p-4 border-t border-slate-200">
+            <div className="p-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t border-slate-200">
               <form action={logoutAction}>
                 <button
                   type="submit"

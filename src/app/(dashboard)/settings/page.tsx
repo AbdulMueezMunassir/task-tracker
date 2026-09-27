@@ -45,7 +45,8 @@ export default function SettingsPage() {
             <Input
               id="name"
               name="name"
-              defaultValue={userName}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               placeholder="Your name"
               required
               className="focus:ring-blue-500 focus:border-blue-500"
