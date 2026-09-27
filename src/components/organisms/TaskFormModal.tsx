@@ -119,7 +119,7 @@ export function TaskFormModal({
                 onChange={(e) =>
                   setPriority(e.target.value as "LOW" | "MEDIUM" | "HIGH")
                 }
-                className="w-full h-9 px-3 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full h-9 px-3 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="LOW">Low</option>
                 <option value="MEDIUM">Medium</option>
@@ -151,6 +151,7 @@ export function TaskFormModal({
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
+              className="focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 

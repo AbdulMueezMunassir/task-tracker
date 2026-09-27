@@ -15,10 +15,12 @@ import {
 } from "lucide-react";
 import { logoutAction } from "@/lib/actions/auth";
 import { cn } from "@/lib/utils";
+import { BarChart3 } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/tasks", label: "Tasks / Board", icon: Kanban },
+  { href: "/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/settings", label: "Settings", icon: Settings },
   { href: "/docs", label: "Documentation", icon: BookOpen },
   { href: "/support", label: "Support", icon: HelpCircle },
