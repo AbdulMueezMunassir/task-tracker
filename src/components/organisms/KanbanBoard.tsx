@@ -19,6 +19,8 @@ const columns: { key: Task["status"]; label: string; color: string }[] = [
   { key: "DONE", label: "Done", color: "bg-emerald-500" },
 ];
 
+type Priority = "ALL" | "LOW" | "MEDIUM" | "HIGH";
+
 export function KanbanBoard() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +30,9 @@ export function KanbanBoard() {
   // Search state with debounce
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+
+  // Priority filter
+  const [priorityFilter, setPriorityFilter] = useState<Priority>("ALL");
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300);
@@ -87,40 +92,63 @@ export function KanbanBoard() {
     setModalOpen(true);
   }
 
-  // Filter tasks by search query
+  // Combined filter: search + priority
   const filteredTasks = tasks.filter((task) => {
     const q = debouncedQuery.toLowerCase().trim();
-    if (!q) return true;
-    return (
+    const matchesSearch =
+      !q ||
       task.title.toLowerCase().includes(q) ||
-      (task.description?.toLowerCase().includes(q) ?? false)
-    );
+      (task.description?.toLowerCase().includes(q) ?? false);
+
+    const matchesPriority =
+      priorityFilter === "ALL" || task.priority === priorityFilter;
+
+    return matchesSearch && matchesPriority;
   });
 
   return (
     <>
-      <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
+      {/* Header */}
+      <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-start lg:justify-between">
         {/* Title */}
-        <div>
+        <div className="shrink-0">
           <h1 className="text-2xl font-semibold tracking-tight">Task Board</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Manage your tasks across the workflow.
           </p>
         </div>
 
-        {/* Search + Button */}
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1 md:flex-none">
+        {/* Search + Filter + Button */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full lg:w-auto">
+          {/* Search */}
+          <div className="relative flex-1 sm:flex-none sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search tasks..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-9 pl-9 pr-3 w-full md:w-56 text-sm bg-white/70 backdrop-blur-md border border-slate-200/70 rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="h-9 pl-9 pr-3 w-full text-sm bg-white/70 backdrop-blur-md border border-slate-200/70 rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
             />
           </div>
-          <Button onClick={handleNewTask} className="gap-1.5 shrink-0">
+
+          {/* Priority Filter */}
+          <select
+            value={priorityFilter}
+            onChange={(e) => setPriorityFilter(e.target.value as Priority)}
+            className="h-9 px-3 text-sm bg-white/70 backdrop-blur-md border border-slate-200/70 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer transition-all"
+          >
+            <option value="ALL">All Priorities</option>
+            <option value="HIGH">High</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="LOW">Low</option>
+          </select>
+
+          {/* New Task Button */}
+          <Button
+            onClick={handleNewTask}
+            className="gap-1.5 shrink-0 bg-blue-600 hover:bg-blue-700 transition-colors"
+          >
             <Plus className="h-4 w-4" />
             <span className="hidden sm:inline">New Task</span>
             <span className="sm:hidden">New</span>
@@ -128,6 +156,7 @@ export function KanbanBoard() {
         </div>
       </div>
 
+      {/* Columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
         {columns.map((col) => {
           const colTasks = filteredTasks.filter((t) => t.status === col.key);
@@ -156,7 +185,9 @@ export function KanbanBoard() {
               <div className="flex flex-col gap-2.5">
                 {colTasks.length === 0 ? (
                   <div className="py-8 text-center text-xs text-muted-foreground">
-                    {debouncedQuery ? "No matching tasks" : "No tasks"}
+                    {debouncedQuery || priorityFilter !== "ALL"
+                      ? "No matching tasks"
+                      : "No tasks"}
                   </div>
                 ) : (
                   colTasks.map((task) => (

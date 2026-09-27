@@ -8,6 +8,13 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -96,6 +103,7 @@ export function TaskFormModal({
               onChange={(e) => setTitle(e.target.value)}
               placeholder="What needs to be done?"
               required
+              className="focus-visible:ring-blue-500 focus-visible:border-blue-500"
             />
           </div>
 
@@ -107,40 +115,85 @@ export function TaskFormModal({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Add more details..."
               rows={3}
+              className="focus-visible:ring-blue-500 focus-visible:border-blue-500"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
+            {/* Priority — Custom Dropdown */}
             <div className="space-y-1.5">
               <Label htmlFor="priority">Priority</Label>
-              <select
-                id="priority"
+              <Select
                 value={priority}
-                onChange={(e) =>
-                  setPriority(e.target.value as "LOW" | "MEDIUM" | "HIGH")
+                onValueChange={(v) =>
+                  setPriority(v as "LOW" | "MEDIUM" | "HIGH")
                 }
-                className="w-full h-9 px-3 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="LOW">Low</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="HIGH">High</option>
-              </select>
+                <SelectTrigger
+                  id="priority"
+                  className="w-full h-9 bg-background border-border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                >
+                  <SelectValue placeholder="Select priority" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-slate-200">
+                  <SelectItem
+                    value="LOW"
+                    className="focus:bg-blue-50 focus:text-blue-700 data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700 cursor-pointer"
+                  >
+                    Low
+                  </SelectItem>
+                  <SelectItem
+                    value="MEDIUM"
+                    className="focus:bg-blue-50 focus:text-blue-700 data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700 cursor-pointer"
+                  >
+                    Medium
+                  </SelectItem>
+                  <SelectItem
+                    value="HIGH"
+                    className="focus:bg-blue-50 focus:text-blue-700 data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700 cursor-pointer"
+                  >
+                    High
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
+            {/* Status — Custom Dropdown */}
             <div className="space-y-1.5">
               <Label htmlFor="status">Status</Label>
-              <select
-                id="status"
+              <Select
                 value={status}
-                onChange={(e) =>
-                  setStatus(e.target.value as "TODO" | "IN_PROGRESS" | "DONE")
+                onValueChange={(v) =>
+                  setStatus(v as "TODO" | "IN_PROGRESS" | "DONE")
                 }
-                className="w-full h-9 px-3 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               >
-                <option value="TODO">To Do</option>
-                <option value="IN_PROGRESS">In Progress</option>
-                <option value="DONE">Done</option>
-              </select>
+                <SelectTrigger
+                  id="status"
+                  className="w-full h-9 bg-background border-border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                >
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-slate-200">
+                  <SelectItem
+                    value="TODO"
+                    className="focus:bg-blue-50 focus:text-blue-700 data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700 cursor-pointer"
+                  >
+                    To Do
+                  </SelectItem>
+                  <SelectItem
+                    value="IN_PROGRESS"
+                    className="focus:bg-blue-50 focus:text-blue-700 data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700 cursor-pointer"
+                  >
+                    In Progress
+                  </SelectItem>
+                  <SelectItem
+                    value="DONE"
+                    className="focus:bg-blue-50 focus:text-blue-700 data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-700 cursor-pointer"
+                  >
+                    Done
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -151,7 +204,7 @@ export function TaskFormModal({
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="focus:ring-blue-500 focus:border-blue-500"
+              className="focus-visible:ring-blue-500 focus-visible:border-blue-500"
             />
           </div>
 
@@ -165,7 +218,11 @@ export function TaskFormModal({
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-blue-600 hover:bg-blue-700 transition-colors"
+            >
               {loading ? "Saving..." : task ? "Update Task" : "Create Task"}
             </Button>
           </DialogFooter>
