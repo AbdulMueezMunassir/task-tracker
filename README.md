@@ -2,7 +2,7 @@
 
 A production-grade task management app built with Next.js 16, TypeScript, Supabase, and Prisma. Features a Kanban board, real-time task CRUD, priority tracking, and overdue detection.
 
-**Live Demo:** [https://task-tracker.vercel.app](https://vercel.com)
+**Live Demo:** https://task-tracker-tau-ruby.vercel.app
 
 ---
 
