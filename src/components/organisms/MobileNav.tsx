@@ -53,7 +53,7 @@ export function MobileNav() {
 
           {/* Sidebar Panel — Full height, solid white */}
           <aside
-            className="absolute left-0 top-0 h-full w-72 flex flex-col shadow-2xl"
+            className="absolute inset-y-0 left-0 w-72 flex flex-col shadow-2xl"
             style={{ backgroundColor: "#ffffff" }}
           >
             {/* Header: Brand + Close (Fixed at Top) */}
