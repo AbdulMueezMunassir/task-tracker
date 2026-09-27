@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Search, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/organisms/MobileNav";
@@ -23,26 +23,14 @@ export function TopNavbar({ userEmail, userName }: TopNavbarProps) {
 
   return (
     <header className="fixed top-0 left-0 md:left-60 right-0 h-14 z-30 flex items-center justify-between px-3 md:px-6 bg-white/70 backdrop-blur-md border-b border-slate-200/70">
-      {/* Left: Mobile Menu + Search */}
-      <div className="flex items-center gap-2 flex-1 max-w-md">
+      {/* Left: Mobile Menu */}
+      <div className="flex items-center gap-2 flex-1">
         <MobileNav />
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search tasks..."
-            className="w-full h-9 pl-9 pr-3 text-sm bg-white/60 border border-slate-200/70 rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-          />
-        </div>
       </div>
 
       {/* Right: Actions */}
       <div className="flex items-center gap-2 md:gap-3">
-        <Button variant="ghost" size="icon" className="h-9 w-9">
-          <Bell className="h-[18px] w-[18px]" />
-        </Button>
-
-        <div className="h-4 w-px bg-border hidden md:block" />
+        {/* Bell removed */}
 
         <div className="hidden md:flex items-center gap-2">
           <Avatar className="h-8 w-8 border border-border">
