@@ -3,6 +3,22 @@ import { z } from "zod";
 export const taskPriorityEnum = z.enum(["LOW", "MEDIUM", "HIGH"]);
 export const taskStatusEnum = z.enum(["TODO", "IN_PROGRESS", "DONE"]);
 
+/**
+ * Reusable due-date field with past-date prevention.
+ * Accepts: ISO datetime string, empty string, null, or undefined.
+ * Rejects: past dates.
+ */
+const dueDateField = z
+  .string()
+  .datetime({ message: "Invalid date format" })
+  .optional()
+  .nullable()
+  .or(z.literal(""))
+  .refine(
+    (val) => !val || new Date(val) >= new Date(new Date().toDateString()),
+    { message: "Due date cannot be in the past" }
+  );
+
 export const createTaskSchema = z.object({
   title: z
     .string()
@@ -17,12 +33,7 @@ export const createTaskSchema = z.object({
     .or(z.literal("")),
   priority: taskPriorityEnum.default("MEDIUM"),
   status: taskStatusEnum.default("TODO"),
-  dueDate: z
-    .string()
-    .datetime({ message: "Invalid date format" })
-    .optional()
-    .nullable()
-    .or(z.literal("")),
+  dueDate: dueDateField,
 });
 
 export const updateTaskSchema = createTaskSchema.partial();

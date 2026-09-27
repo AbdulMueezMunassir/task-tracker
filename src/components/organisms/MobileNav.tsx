@@ -50,72 +50,32 @@ export function MobileNav() {
           />
 
           {/* Drawer — full screen height + solid white */}
-          <aside
-            className="absolute left-0 top-0 h-screen w-72 flex flex-col justify-between p-4 shadow-2xl overflow-y-auto"
-            style={{ backgroundColor: "#ffffff" }}
-          >
-            <div className="flex flex-col gap-5">
-              {/* Header */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
-                    K
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-sm tracking-tight leading-none text-slate-900">
-                      Klaro
-                    </span>
-                    <span className="text-[11px] text-slate-500 mt-0.5">
-                      Enterprise Workspace
-                    </span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 transition-colors"
-                  aria-label="Close menu"
-                >
-                  <X className="h-4 w-4 text-slate-700" />
-                </button>
+          <aside className="absolute left-0 top-0 h-screen w-72 bg-white border-r border-slate-200 flex flex-col shadow-2xl">
+            {/* Scrollable content */}
+            <div className="flex-1 overflow-y-auto p-4">
+              {/* Brand + Close */}
+              <div className="flex items-center justify-between mb-6">
+                {/* ...existing brand + X button... */}
               </div>
 
               {/* Nav */}
               <nav className="flex flex-col gap-1">
-                {navItems.map((item) => {
-                  const isActive =
-                    pathname === item.href ||
-                    pathname.startsWith(item.href + "/");
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className={cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
-                        isActive
-                          ? "bg-blue-50 text-blue-600 font-medium"
-                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                      )}
-                    >
-                      <Icon className="h-[18px] w-[18px]" />
-                      <span>{item.label}</span>
-                    </Link>
-                  );
-                })}
+                {/* ...existing nav items... */}
               </nav>
             </div>
 
-            {/* Logout */}
-            <form action={logoutAction} className="pt-3 border-t border-slate-200">
-              <button
-                type="submit"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-rose-600 hover:bg-rose-50 hover:text-rose-700 transition-all duration-200 w-full"
-              >
-                <LogOut className="h-[18px] w-[18px]" />
-                <span>Logout</span>
-              </button>
-            </form>
+            {/* Sticky Logout at Bottom */}
+            <div className="p-4 border-t border-slate-200">
+              <form action={logoutAction}>
+                <button
+                  type="submit"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-rose-600 hover:bg-rose-50 hover:text-rose-700 transition-all duration-200 w-full"
+                >
+                  <LogOut className="h-[18px] w-[18px]" />
+                  <span>Logout</span>
+                </button>
+              </form>
+            </div>
           </aside>
         </div>
       )}

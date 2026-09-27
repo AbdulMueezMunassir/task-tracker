@@ -16,10 +16,11 @@ export async function signupAction(
   formData: FormData
 ): Promise<AuthState> {
   const raw = {
-    email: formData.get("email"),
-    password: formData.get("password"),
-    name: formData.get("name"),
-  };
+  email: formData.get("email"),
+  password: formData.get("password"),
+  name: formData.get("name"),
+  confirmPassword: formData.get("confirmPassword"),
+};
 
   const parsed = signupSchema.safeParse(raw);
   if (!parsed.success) {

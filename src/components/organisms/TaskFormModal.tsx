@@ -70,6 +70,16 @@ export function TaskFormModal({
       return;
     }
 
+    // Client-side past-date check (mirrors Zod validation)
+    if (dueDate) {
+      const selected = new Date(dueDate);
+      const today = new Date(new Date().toDateString());
+      if (selected < today) {
+        setError("Due date cannot be in the past");
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       await onSubmit({
@@ -86,6 +96,9 @@ export function TaskFormModal({
       setLoading(false);
     }
   }
+
+  // Today's date in YYYY-MM-DD for the `min` attribute
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -203,6 +216,7 @@ export function TaskFormModal({
               id="dueDate"
               type="date"
               value={dueDate}
+              min={today}
               onChange={(e) => setDueDate(e.target.value)}
               className="focus-visible:ring-blue-500 focus-visible:border-blue-500"
             />
