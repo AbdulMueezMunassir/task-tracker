@@ -1,10 +1,12 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, Kanban, BarChart3, Shield } from "lucide-react";
+import { CheckCircle2, Kanban, BarChart3, Shield, Check, X } from "lucide-react";
 import { signupAction, type AuthState } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/molecules/PasswordInput";
+import { PasswordStrength } from "@/components/molecules/PasswordStrength";
 
 const initialState: AuthState = {};
 
@@ -31,6 +33,11 @@ export default function SignupPage() {
     signupAction,
     initialState
   );
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const showMatch = confirmPassword.length > 0;
+  const passwordsMatch = password === confirmPassword;
 
   return (
     <div className="min-h-dvh w-full grid lg:grid-cols-2">
@@ -142,33 +149,62 @@ export default function SignupPage() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
                   Password
                 </label>
-                <input
+                <PasswordInput
                   id="password"
                   name="password"
-                  type="password"
                   required
                   minLength={6}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 6 characters"
                 />
+                <PasswordStrength password={password} />
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-slate-700 mb-1"
+                >
                   Confirm Password
                 </label>
-                <input
+                <PasswordInput
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="password"
                   required
                   minLength={6}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Re-enter your password"
+                  status={
+                    showMatch ? (passwordsMatch ? "valid" : "invalid") : "default"
+                  }
                 />
+                {showMatch && (
+                  <p
+                    role="status"
+                    className={`mt-1.5 flex items-center gap-1.5 text-xs font-medium ${
+                      passwordsMatch ? "text-emerald-600" : "text-rose-600"
+                    }`}
+                  >
+                    {passwordsMatch ? (
+                      <Check className="h-3.5 w-3.5" />
+                    ) : (
+                      <X className="h-3.5 w-3.5" />
+                    )}
+                    {passwordsMatch
+                      ? "Passwords match"
+                      : "Passwords do not match"}
+                  </p>
+                )}
               </div>
 
               {state.error && (
@@ -179,7 +215,7 @@ export default function SignupPage() {
 
               <Button
                 type="submit"
-                disabled={isPending}
+                disabled={isPending || (showMatch && !passwordsMatch)}
                 className="w-full bg-blue-600 hover:bg-blue-700 transition-colors"
               >
                 {isPending ? "Creating account..." : "Create account"}
