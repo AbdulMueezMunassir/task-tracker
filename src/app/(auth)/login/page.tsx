@@ -34,9 +34,9 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-screen w-full grid lg:grid-cols-2">
+    <div className="min-h-dvh w-full grid lg:grid-cols-2">
       {/* LEFT: Intro */}
-      <div className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white min-h-screen">
+      <div className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white min-h-dvh">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center font-bold text-lg">
             K
@@ -85,7 +85,7 @@ export default function LoginPage() {
       </div>
 
       {/* RIGHT: Auth */}
-      <div className="flex items-center justify-center p-6 lg:p-12 min-h-screen">
+      <div className="flex items-center justify-center p-6 lg:p-12 min-h-dvh">
         <div className="w-full max-w-md">
           <div className="lg:hidden flex items-center gap-3 mb-8">
             <div className="h-10 w-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
