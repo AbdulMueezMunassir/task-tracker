@@ -37,24 +37,37 @@ export function MobileNav() {
   // backdrop-blur-md. A backdrop-filter on an ancestor creates a new
   // containing block for any `fixed` descendant, so without the portal the
   // drawer's "fixed inset-0" was resolving against the header's small h-14
-  // box instead of the actual screen — that's what caused it to collapse
-  // and let the dashboard show through with no dark overlay.
+  // box instead of the actual screen.
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Lock page scroll while the drawer is open so the sidebar/page behind
+  // can't be scrolled or dragged around.
+  useEffect(() => {
+    if (!open) return;
+    const prevBody = document.body.style.overflow;
+    const prevHtml = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevBody;
+      document.documentElement.style.overflow = prevHtml;
+    };
+  }, [open]);
 
   const drawer = open && (
     <div className="fixed inset-0 z-50 md:hidden">
       {/* Dark Backdrop */}
       <div
-        className="absolute inset-0 bg-slate-900/50"
+        className="absolute inset-0 bg-slate-900/50 touch-none"
         onClick={() => setOpen(false)}
         aria-label="Close menu"
       />
 
       {/* Sidebar Panel — Full height, solid white */}
       <aside
-        className="absolute inset-y-0 left-0 w-72 flex flex-col shadow-2xl"
+        className="absolute inset-y-0 left-0 w-72 flex flex-col shadow-2xl overflow-hidden overscroll-contain"
         style={{ backgroundColor: "#ffffff" }}
       >
         {/* Header: Brand + Close (Fixed at Top) */}
@@ -82,7 +95,7 @@ export function MobileNav() {
         </div>
 
         {/* Navigation Links (Scrollable Middle) */}
-        <nav className="flex-1 overflow-y-auto p-4 flex flex-col gap-1">
+        <nav className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 flex flex-col gap-1">
           {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
